@@ -2,7 +2,7 @@ import logging
 from typing import Any, Callable, Optional
 
 from BaseClasses import CollectionState
-from .ALttPDoorRandomizer.BaseClasses import Door, Entrance, Location, World as DoorRandoWorld
+from .ALttPDoorRandomizer.BaseClasses import CrystalBarrier, Door, Entrance, Location, World as DoorRandoWorld
 
 
 logger = logging.getLogger("alttpr")
@@ -16,10 +16,15 @@ class StateAdapter:
     # Archipelago item checks. In other words, we get to reuse the DR lambda's that define logical
     # access to different regions and locations, by passing in StateAdapter instead of AP's CollectionState.
     ###############################################
+    _checked_crystal_regions = set()
+    @property
+    def checked_crystal_regions(self):
+        return type(self)._checked_crystal_regions
 
-    def __init__(self, state: CollectionState, world: DoorRandoWorld, player: int):
-        self.placing_items = None  # Used inside Door Randomizer
+    def __init__(self, state: CollectionState, world: DoorRandoWorld, player: int, crystal_paths):
+        self.crystal_paths = crystal_paths
         self.state = state
+        self.placing_items = None  # Used inside Door Randomizer
         self.player = player
         self.world = world
 
@@ -174,20 +179,51 @@ class StateAdapter:
         # This will be the simple version for non-door rando. In general, if you can reach
         # blue blocks you can also reach a crystal switch.
         # TODO: Bomb bag also breaks this assumption for back of Mire
-        extra_condition = True
-        if region.name.startswith("Swamp "):
-            extra_condition = self.has_item("Small Key (Swamp Palace)", 6)
-        elif region.name in ["Ice Backwards Room", "Ice Crystal Left", "Ice Crystal Right"]:
-            extra_condition = self.has_item("Small Key (Ice Palace)", 6)
-        elif region.name.startswith("Mire") and region.name != "Mire Crystal Mid":  # If not in the back of Mire
-            extra_condition = self.has_item("Small Key (Misery Mire)", 3)
+        if False:
+            extra_condition = True
+            if region.name.startswith("Swamp "):
+                extra_condition = self.has_item("Small Key (Swamp Palace)", 6)
+            elif region.name in ["Ice Backwards Room", "Ice Crystal Left", "Ice Crystal Right"]:
+                extra_condition = self.has_item("Small Key (Ice Palace)", 6)
+            elif region.name.startswith("Mire") and region.name != "Mire Crystal Mid":  # If not in the back of Mire
+                extra_condition = self.has_item("Small Key (Misery Mire)", 3)
 
-        return self.can_hit_crystal(player) and extra_condition
+            return self.can_hit_crystal(player) and extra_condition
+        else:
+            if region.name in self.checked_crystal_regions:
+                # No infinite loops please
+                return False
+            self.checked_crystal_regions.add(region.name)
+            can_reach = False
+            if region.name in self.crystal_paths:
+                for path_info in self.crystal_paths[region.name]:
+                    if (path_info.color == CrystalBarrier.Blue or path_info.color == CrystalBarrier.Either) and path_info.crystal_switch_region.can_reach(self) and all(entrance.access_rule(self.state) for entrance in path_info.path):
+                        can_reach = True
+                        break
+            self.checked_crystal_regions.remove(region.name)
+            logger.info(f"Checked blue barrier for region {region.name}, can reach: {can_reach}")
+            return can_reach
 
 
     def can_reach_orange(self, region, player) -> bool:
-        # TODO: Door rando
-        return True
+        if False:
+            return True
+        else:
+            if region.name in self.checked_crystal_regions:
+                # No infinite loops please
+                return False
+            if region.name == "Hera Basement Cage":
+                pass
+            self.checked_crystal_regions.add(region.name)
+            can_reach = False
+            if region.name in self.crystal_paths:
+                for path_info in self.crystal_paths[region.name]:
+                    if (path_info.color == CrystalBarrier.Orange or path_info.color == CrystalBarrier.Either) and path_info.crystal_switch_region.can_reach(self) and all(entrance.access_rule(self.state) for entrance in path_info.path):
+                        can_reach = True
+                        break
+            self.checked_crystal_regions.remove(region.name)
+            logger.info(f"Checked orange barrier for region {region.name}, can reach: {can_reach}")
+            return can_reach
 
 
     def can_shoot_arrows(self, player) -> bool:
@@ -288,13 +324,13 @@ class StateAdapter:
         return not region.can_cause_bunny(1)
 
 
-def adapt_door_rando_rule(rule_func: Callable[[StateAdapter], bool], world: DoorRandoWorld, player: int) -> Callable[[CollectionState], bool]:
+def adapt_door_rando_rule(rule_func: Callable[[StateAdapter], bool], world: DoorRandoWorld, player: int, crystal_paths) -> Callable[[CollectionState], bool]:
     # Convert a DoorRandomizer rule function to work with Archipelago's CollectionState.
     def adapted_rule(state: CollectionState) -> bool:
         try:
-            return rule_func(StateAdapter(state, world, player))
+            return rule_func(StateAdapter(state, world, player, crystal_paths))
         except Exception as e:
-            logger.warning(f"Error evaluating adapted DoorRandomizer rule for player {player}: {e}")
+            logger.warning(f"Error evaluating adapted DoorRandomizer rule for player {world.player}: {e}")
             raise e
 
     return adapted_rule

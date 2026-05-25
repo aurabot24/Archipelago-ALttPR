@@ -8,7 +8,7 @@ import typing
 from urllib.request import urlopen
 
 # Imports of base Archipelago modules must be absolute.
-from BaseClasses import ItemClassification
+from BaseClasses import Entrance, ItemClassification, Region
 from Options import OptionError
 import settings
 from worlds.AutoWorld import World
@@ -16,7 +16,7 @@ from worlds.Files import APProcedurePatch
 from worlds.alttpr import Sprites
 
 # Imports of your world's files must be relative.
-from .ALttPDoorRandomizer.BaseClasses import World as DoorRandoWorld  # Avoid naming conflict with AP's World class
+from .ALttPDoorRandomizer.BaseClasses import CrystalBarrier, World as DoorRandoWorld  # Avoid naming conflict with AP's World class
 from .ALttPDoorRandomizer.Bosses import place_bosses
 from .ALttPDoorRandomizer.source.classes.CustomSettings import CustomSettings
 from .ALttPDoorRandomizer.source.enemizer.DamageTables import DamageTable
@@ -87,6 +87,11 @@ class ALttPRWorld(World):
 
     # We need to modify the multiworld to recognize the ALttPR ROM hash, but only after that ROM has finished generating
     finished_generating: threading.Event
+
+    # To handle crystal switch logic, we need all possible paths to each entrance in a dungeon
+    # that requires orange/blue blocks in a certain configuration.
+    # This is a dict of regions to ALttPRCrystalPath, defined in Regions.py, not used here because of circular imports.
+    crystal_paths = {}
 
 
     ###############################################################################

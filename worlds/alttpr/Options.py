@@ -49,7 +49,8 @@ class Goal(TextChoice):
 
 
 class OpenPyramid(TextChoice):
-    """ Whether the Pyramid hole leading to Ganon should be open at the start. Choosing "auto" will open or close it based on your goal setting."""
+    """ Whether the Pyramid hole leading to Ganon should be open at the start. Choosing "auto" will open or close it based on your goal setting;
+    it will be open for crystals, trinity, and ganonhunt, and closed for other goals, or if crossed entrance is enabled regardless of the goal."""
     display_name = "Open Pyramid"
     option_auto = "auto"
     option_open = "yes"
