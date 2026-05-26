@@ -190,40 +190,32 @@ class StateAdapter:
 
             return self.can_hit_crystal(player) and extra_condition
         else:
-            if region.name in self.checked_crystal_regions:
-                # No infinite loops please
-                return False
-            self.checked_crystal_regions.add(region.name)
-            can_reach = False
-            if region.name in self.crystal_paths:
-                for path_info in self.crystal_paths[region.name]:
-                    if (path_info.color == CrystalBarrier.Blue or path_info.color == CrystalBarrier.Either) and path_info.crystal_switch_region.can_reach(self) and all(entrance.access_rule(self.state) for entrance in path_info.path):
-                        can_reach = True
-                        break
-            self.checked_crystal_regions.remove(region.name)
-            logger.info(f"Checked blue barrier for region {region.name}, can reach: {can_reach}")
-            return can_reach
+            return self.can_reach_crystal_barrier(region, CrystalBarrier.Blue)
 
 
     def can_reach_orange(self, region, player) -> bool:
         if False:
             return True
         else:
-            if region.name in self.checked_crystal_regions:
-                # No infinite loops please
-                return False
-            if region.name == "Hera Basement Cage":
-                pass
-            self.checked_crystal_regions.add(region.name)
-            can_reach = False
-            if region.name in self.crystal_paths:
-                for path_info in self.crystal_paths[region.name]:
-                    if (path_info.color == CrystalBarrier.Orange or path_info.color == CrystalBarrier.Either) and path_info.crystal_switch_region.can_reach(self) and all(entrance.access_rule(self.state) for entrance in path_info.path):
-                        can_reach = True
-                        break
-            self.checked_crystal_regions.remove(region.name)
-            logger.info(f"Checked orange barrier for region {region.name}, can reach: {can_reach}")
-            return can_reach
+            return self.can_reach_crystal_barrier(region, CrystalBarrier.Orange)
+
+
+    def can_reach_crystal_barrier(self, region, color):
+        if region.name in self.checked_crystal_regions:
+            # No infinite loops please
+            return False
+
+        self.checked_crystal_regions.add(region.name)
+        can_reach = False
+        if region.name in self.crystal_paths:
+            for path_info in self.crystal_paths[region.name]:
+                if ((path_info.color == color or path_info.color == CrystalBarrier.Either)) and \
+                     self.can_reach(path_info.crystal_switch_region) and \
+                     all(self.state.multiworld.get_entrance(entrance, self.player).access_rule(self) for entrance in path_info.path):
+                    can_reach = True
+                    break
+        self.checked_crystal_regions.remove(region.name)
+        return can_reach
 
 
     def can_shoot_arrows(self, player) -> bool:
@@ -330,7 +322,7 @@ def adapt_door_rando_rule(rule_func: Callable[[StateAdapter], bool], world: Door
         try:
             return rule_func(StateAdapter(state, world, player, crystal_paths))
         except Exception as e:
-            logger.warning(f"Error evaluating adapted DoorRandomizer rule for player {world.player}: {e}")
+            logger.warning(f"Error evaluating adapted DoorRandomizer rule for player {player}: {e}")
             raise e
 
     return adapted_rule

@@ -41,8 +41,10 @@ class ALttPREntrance(Entrance):
 class ALttPRCrystalPath:
     def __init__(self, color: CrystalBarrier, crystal_switch_region: ALttPRRegion, path: list[ALttPREntrance]):
         self.color = color
-        self.crystal_switch_region = crystal_switch_region
-        self.path = path
+        self.crystal_switch_region = crystal_switch_region.name  # The name of a region with a crystal switch
+        self.path = [entrance.name for entrance in path]  # The path of entrances leading from the crystal switch to a particular region
+        # NOTE: Names of regions/entrances are used instead of the Region/Entrance objects because Regions have a
+        # reference to the multiworld, which gets manually cleaned up after generation, causing a memory leak
 
 
 dungeon_vanilla_entrance_regions = {
