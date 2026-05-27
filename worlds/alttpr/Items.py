@@ -114,6 +114,7 @@ progressive_items = [
     "Big Key (Eastern Palace)",
     "Big Key (Desert Palace)",
     "Big Key (Tower of Hera)",
+    "Big Key (Agahnims Tower)",
     "Big Key (Palace of Darkness)",
     "Big Key (Swamp Palace)",
     "Big Key (Skull Woods)",
@@ -204,9 +205,11 @@ filler_items = [
     "Bombs (3)",
     "Bombs (10)",
     "Bug Catching Net",
+    "Compass (Escape)",
     "Compass (Eastern Palace)",
     "Compass (Desert Palace)",
     "Compass (Tower of Hera)",
+    "Compass (Agahnims Tower)",
     "Compass (Palace of Darkness)",
     "Compass (Swamp Palace)",
     "Compass (Skull Woods)",
@@ -219,6 +222,7 @@ filler_items = [
     "Map (Eastern Palace)",
     "Map (Desert Palace)",
     "Map (Tower of Hera)",
+    "Map (Agahnims Tower)",
     "Map (Palace of Darkness)",
     "Map (Swamp Palace)",
     "Map (Skull Woods)",
@@ -357,6 +361,7 @@ def place_pre_fill_items(world: ALttPRWorld) -> None:
             if world.options.small_key_shuffle.value and dr_item_name.startswith("Small Key"):
                 continue
             else:
+                continue
                 logger.error(f"Could not find dungeon item {dungeon_item} in door rando item list.")
                 raise Exception()
 

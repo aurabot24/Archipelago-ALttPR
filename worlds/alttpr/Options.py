@@ -133,6 +133,11 @@ class Zelgawoods(Toggle):
     display_name = "Zelgawoods"
 
 
+class DoorTypeShuffle(Toggle):
+    """Randomize the type of each door (small key, big key, bombable, trap, etc.)"""
+    display_name = "Door Type Shuffle"
+
+
 class EnemyShuffle(TextChoice):
     """All enemies except bosses are randomized. Logical enemy shuffle might require defeating enemies that
     require specific items (Eyegore, Freezors, etc.) to progress in a dungeon."""
@@ -302,6 +307,7 @@ class ALttPROptions(PerGameCommonOptions):
     key_drop_shuffle: KeyDropShuffle
     entrance_shuffle: EntranceShuffle
     zelgawoods: Zelgawoods
+    door_type_shuffle: DoorTypeShuffle
     enemy_shuffle: EnemyShuffle
     boss_shuffle: BossShuffle
     shopsanity: Shopsanity

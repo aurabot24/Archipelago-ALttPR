@@ -131,7 +131,7 @@ class ALttPRWorld(World):
         # The world can create a multiworld with many players each with different options, but we only need to
         # generate for one player, hence all the "1"s everywhere.
         self.door_rando_world = DoorRandoWorld(
-            1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.value}, {1: "vanilla"}, {1: "noglitches"},
+            1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.value}, {1: "partitioned"}, {1: "noglitches"},
             {1: self.options.world_mode.value}, {1: "random"}, {1: "normal"}, {1: None}, "none", "on", {1: self.options.goal.value},
             "balanced", {1: "locations"}, {1: True}, False, Items.default_items_dict, {1: False}, "none"
         )
@@ -148,12 +148,13 @@ class ALttPRWorld(World):
         self.door_rando_world.crystals_needed_for_gt = {1: self.options.crystals_needed_for_ganons_tower.value}
         self.door_rando_world.crystals_needed_for_ganon = {1: self.options.crystals_needed_for_ganon.value}
         self.door_rando_world.customizer = None
+        self.door_rando_world.door_type_mode = {1: "original" if not self.options.door_type_shuffle.value else "chaos"}
         self.door_rando_world.dropshuffle = {1: "none" if not self.options.key_drop_shuffle.value else "keys"}
         self.door_rando_world.dungeon_counters = {1: "off"}  # TODO: What to do with this, the code for this is in DoorRandomizer Rom.py, line 1207
         self.door_rando_world.enemy_shuffle = {1: self.options.enemy_shuffle.value if self.options.enemy_shuffle.value != "logical" else "shuffled"}
         self.door_rando_world.experimental = {1: False}  # This makes you a bunny if your spawn point is in the dark world
         self.door_rando_world.flute_mode = {1: "active" if self.options.pre_activated_flute.value else "normal"}
-        self.door_rando_world.intensity = {1: 0}  # No door shuffle
+        self.door_rando_world.intensity = {1: 2}  # No door shuffle
         self.door_rando_world.keyshuffle = {1: "none" if not self.options.small_key_shuffle.value else "wild"}
         self.door_rando_world.linked_drops = {1: "unset"}  # In entrance shuffle, whether dropdowns link with their matching exit is determined by the entrance setting
         self.door_rando_world.lock_aga_door_in_escape = True
