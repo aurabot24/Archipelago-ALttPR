@@ -131,8 +131,8 @@ class ALttPRWorld(World):
         # The world can create a multiworld with many players each with different options, but we only need to
         # generate for one player, hence all the "1"s everywhere.
         self.door_rando_world = DoorRandoWorld(
-            1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.value}, {1: "partitioned"}, {1: "noglitches"},
-            {1: self.options.world_mode.value}, {1: "random"}, {1: "normal"}, {1: None}, "none", "on", {1: self.options.goal.value},
+            1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.value}, {1: self.options.door_shuffle.value},
+            {1: "noglitches"}, {1: self.options.world_mode.value}, {1: "random"}, {1: "normal"}, {1: None}, "none", "on", {1: self.options.goal.value},
             "balanced", {1: "locations"}, {1: True}, False, Items.default_items_dict, {1: False}, "none"
         )
 
@@ -154,7 +154,7 @@ class ALttPRWorld(World):
         self.door_rando_world.enemy_shuffle = {1: self.options.enemy_shuffle.value if self.options.enemy_shuffle.value != "logical" else "shuffled"}
         self.door_rando_world.experimental = {1: False}  # This makes you a bunny if your spawn point is in the dark world
         self.door_rando_world.flute_mode = {1: "active" if self.options.pre_activated_flute.value else "normal"}
-        self.door_rando_world.intensity = {1: 2}  # No door shuffle
+        self.door_rando_world.intensity = {1: 2 if not self.options.lobby_shuffle.value else 3}
         self.door_rando_world.keyshuffle = {1: "none" if not self.options.small_key_shuffle.value else "wild"}
         self.door_rando_world.linked_drops = {1: "unset"}  # In entrance shuffle, whether dropdowns link with their matching exit is determined by the entrance setting
         self.door_rando_world.lock_aga_door_in_escape = True
@@ -483,6 +483,7 @@ class ALttPRWorld(World):
 
         self.check_option("entrance_shuffle", ["vanilla", "crossed"], errors)
         self.check_option("zelgawoods", [0, 1, "true", "false"], errors)
+        self.check_option("door_shuffle", ["vanilla", "basic", "partitioned", "crossed"], errors)
         self.check_option("enemy_shuffle", ["none", "random", "logical"], errors)
         self.check_option("boss_shuffle", ["none", "simple", "full", "random"], errors)
         self.check_option("flute_shuffle", ["vanilla", "balanced", "random"], errors)

@@ -133,9 +133,40 @@ class Zelgawoods(Toggle):
     display_name = "Zelgawoods"
 
 
+class DoorShuffle(TextChoice):
+    """Randomize the layout of each dungeon. Rooms are rearranged or appear in other dungeons, and doors are randomized.
+
+    * Dungeons always have their original boss room, which drops that dungeon's prize.
+    * Dropdowns are vanilla, and rooms connected by a dropdown are always in the same dungeon.
+    * Dungeons may have different key counts. Agahnims Tower could have a Big Key, and other dungeons may not have a Big Key.
+    * Killing Blind requires bombing the cracked floor in the attic, which may be in a different dungeon.
+    * Bringing the Maiden to the Thieves Town boss room will tell you which dungeon has the attic.
+    * Locations will have the name of their original dungeon, not the dungeon they appear in.
+
+    vanilla: Dungeons have their vanilla layout
+    basic: Dungeon layouts are shuffled, but each room stays in its own dungeon
+    partitioned: Dungeon layouts are shuffled, with rooms from different dungeons being mixed together. Rooms in light world dungeons including Hyrule
+        Castle and Agahnims Tower are shuffled together, early dark world dungeons (Palace of Darkness to Thieves Town) are shuffled together, and
+        Mitts-locked dungeons (Ice Palace to Ganons Tower) are shuffled together.
+    crossed: Rooms from all dungeons are shuffled together."""
+    display_name = "Door Shuffle"
+    option_vanilla = "vanilla"
+    option_basic = "basic"
+    option_partitioned = "partitioned"
+    option_crossed = "crossed"
+    default = "vanilla"
+
+
+class LobbyShuffle(Toggle):
+    """Whether the first room in each dungeon is randomized."""
+    display_name = "Lobby Shuffle"
+    default = False
+
+
 class DoorTypeShuffle(Toggle):
     """Randomize the type of each door (small key, big key, bombable, trap, etc.)"""
     display_name = "Door Type Shuffle"
+    default = False
 
 
 class EnemyShuffle(TextChoice):
@@ -307,6 +338,8 @@ class ALttPROptions(PerGameCommonOptions):
     key_drop_shuffle: KeyDropShuffle
     entrance_shuffle: EntranceShuffle
     zelgawoods: Zelgawoods
+    door_shuffle: DoorShuffle
+    lobby_shuffle: LobbyShuffle
     door_type_shuffle: DoorTypeShuffle
     enemy_shuffle: EnemyShuffle
     boss_shuffle: BossShuffle
