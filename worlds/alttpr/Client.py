@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 
 logger = logging.getLogger("alttpr")
+ROM_PLAYER_LIMIT = 255
 
 class ALttPRSNIClient(SNIClient):
     game = "The Legend of Zelda: A Link to the Past"
@@ -69,11 +70,13 @@ class ALttPRSNIClient(SNIClient):
             recv_index += 1
             snes_buffered_write(ctx, RomAddresses.RECV_PROGRESS_ADDR, bytes([recv_index & 0xFF, (recv_index >> 8) & 0xFF]))
             snes_buffered_write(ctx, RomAddresses.RECV_ITEM_ADDR, bytes([item.item]))
-            snes_buffered_write(ctx, RomAddresses.RECV_ITEM_PLAYER_ADDR, bytes([item.player if item.player != ctx.slot else 0]))
+            snes_buffered_write(ctx, RomAddresses.RECV_ITEM_PLAYER_ADDR, bytes([min(ROM_PLAYER_LIMIT, item.player) if item.player != ctx.slot else 0]))
         if scout_location > 0 and scout_location in ctx.locations_info:
+            # I'm suspicious that this will crash with a player ID >256, or possibly every time?
+            # I don't think this code ever gets called tbh
             snes_buffered_write(ctx, RomAddresses.SCOUTREPLY_LOCATION_ADDR, bytes([scout_location]))
             snes_buffered_write(ctx, RomAddresses.SCOUTREPLY_ITEM_ADDR, bytes([ctx.locations_info[scout_location][0]]))
-            snes_buffered_write(ctx, RomAddresses.SCOUTREPLY_PLAYER_ADDR, bytes([ctx.locations_info[scout_location][1]]))
+            snes_buffered_write(ctx, RomAddresses.SCOUTREPLY_PLAYER_ADDR, bytes([min(ROM_PLAYER_LIMIT, ctx.locations_info[scout_location][1])]))
 
         await snes_flush_writes(ctx)
 
