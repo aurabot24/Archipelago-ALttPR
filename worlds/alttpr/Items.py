@@ -515,11 +515,11 @@ def place_junk_items_in_pots(progitempool: List[Item], usefulitempool: List[Item
                 # a Triforce Piece placed in a location vs. one not placed yet. Removing the wrong Triforce Piece
                 # screws up the item pool.
                 for i in range(0, len(progitempool)):
-                    if progitempool[i] == item and progitempool[i].location:
+                    if progitempool[i] is item:
                         progitempool.pop(i)
                         break
             else:
-                filleritempool.remove(item)
+                filleritempool.pop(next(i for i, candidate in enumerate(filleritempool) if candidate is item))
                 num_filler_items_placed = num_filler_items_placed + 1
 
     local_fill_percent = world.options.local_fill_percent
@@ -539,6 +539,6 @@ def place_junk_items_in_pots(progitempool: List[Item], usefulitempool: List[Item
             item = junk_items.pop(0)
             location = locations.pop(0)
             location.place_locked_item(item)
-            filleritempool.remove(item)
+            filleritempool.pop(next(i for i, candidate in enumerate(filleritempool) if candidate is item))
             fill_locations.remove(location)
             num_filler_items_placed = num_filler_items_placed + 1
