@@ -339,7 +339,6 @@ class TestBigBombInvertedFluteShuffle(BigBombShopBase):
     }
 
     def test_big_bomb_inverted_flute_to_catfish(self):
-        # TODO: Why is this passing? Something seems wrong
         # When the only Flute to east Dark World is near Catfish
         slot_data = deepcopy(slot_data_inverted_flute_shuffle.slot_data)
         slot_data["ow-flutespots"][1] = [0, 2, 3, 10, 15, 16, 19, 48]

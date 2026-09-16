@@ -254,6 +254,14 @@ class BomblessStart(Toggle):
     default = False
 
 
+class Swordless(Toggle):
+    """All swords are removed from the item pool. Ganon can now be hurt with the Hammer, and the tablets require Hammer + Book.
+    Medallions can be used without a sword for the Misery Mire and Turtle Rock entrances, and in a few rooms in Ice Palace.
+    Obstacles in Agahnim's Tower and Skull Woods which require a sword have been removed."""
+    display_name = "Swordless"
+    default = False
+
+
 class Shopsanity(Toggle):
     """All shops contain randomized items, including Potion Shop and Capacity Upgrade Fairy. Adds 32 items to the item pool.
     Each type of potion can be purchased at a random shop."""
@@ -494,6 +502,7 @@ class ALttPROptions(PerGameCommonOptions):
     enemy_shuffle: EnemyShuffle
     boss_shuffle: BossShuffle
     bombless_start: BomblessStart
+    swordless: Swordless
     shopsanity: Shopsanity
     prize_shuffle: PrizeShuffle
     flute_shuffle: FluteShuffle
@@ -540,6 +549,7 @@ alttpr_option_groups: list[OptionGroup] = [
             BigKeyShuffle,
             KeyDropShuffle,
             BomblessStart,
+            Swordless,
             PrizeShuffle,
             Shopsanity,
             Potsanity,

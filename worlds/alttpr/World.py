@@ -399,9 +399,10 @@ class ALttPRWorld(World):
 
         self.door_rando_world = DoorRandoWorld(
             1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.current_key},
-            {1: self.options.door_shuffle.current_key}, {1: "noglitches"}, {1: self.options.world_mode.current_key}, {1: "random"},
-            {1: "normal"}, {1: None}, "none", "on", {1: self.options.goal.current_key},
-            "balanced", {1: "locations"}, {1: True}, False, Items.default_items_dict, {1: False}, "none"
+            {1: self.options.door_shuffle.current_key}, {1: "noglitches"}, {1: self.options.world_mode.current_key},
+            {1: "random" if not self.options.swordless else "swordless"},{1: "normal"}, {1: None},
+            "none", "on", {1: self.options.goal.current_key}, "balanced", {1: "locations"},
+            {1: True}, False, Items.default_items_dict, {1: False}, "none"
         )
 
         # There are sooo many fields that aren't set in the

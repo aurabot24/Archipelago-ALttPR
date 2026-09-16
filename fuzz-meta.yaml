@@ -2,4 +2,5 @@
   accessibility: full
   triforce_hunt_goal: random-range-1-25
   triforce_hunt_total: random-range-25-50
+  swordless: True
   sprite: Link
