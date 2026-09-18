@@ -203,6 +203,21 @@ class ALttPRWorld(World):
         Items.place_junk_items_in_pots(progitempool, usefulitempool, filleritempool, fill_locations, self)
 
 
+    def post_fill(self):
+        # Nothing and Arrows (5) are very messy if they don't appear in a pot.
+        # Nothing can be easily missed because it's invisible, and 5 Arrows has the wrong graphic
+        # and doesn't give arrows unless found under a pot.
+        replacement_items = {"Nothing": self.create_item("Rupee (1)", ItemClassification.filler),
+                             "Arrows (5)": self.create_item("Arrows (10)", ItemClassification.filler),}
+        locations = self.multiworld.find_items_in_locations(set(replacement_items.keys()), self.player)
+
+        for location in locations:
+            if location.item and location.item.name in replacement_items.keys() and (location.player != self.player or "Pot" not in location.name):
+                item = location.item
+                item.code = replacement_items[item.name].code
+                item.name = replacement_items[item.name].name
+
+
     # Our world class must also have a create_item function that can create any one of our items by name at any time.
     def create_item(self, name: str, classification: ItemClassification = ItemClassification.filler) -> Items.ALttPRItem:
         try:
@@ -233,11 +248,7 @@ class ALttPRWorld(World):
                     continue
 
                 dr_item_name = location.item.name if location.item.name not in Items.dr_ap_different_names else Items.dr_ap_different_names[location.item.name]
-                dr_items = [item for item in self.door_rando_world.get_items() if item.name == dr_item_name and item.location is None]
-                dr_item = dr_items[0] if dr_items else None
-                if dr_item is None:
-                    logger.error(f"Could not find item {location.item.name} in door rando itempool.")
-                    raise Exception()
+                dr_item = ItemFactory(dr_item_name, 1)
             else:
                 trap_classification = None
                 # If this is trap + another classification, use the other classification
