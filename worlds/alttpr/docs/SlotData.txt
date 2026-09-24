@@ -101,6 +101,12 @@ This is the current slot data for the APWorld. Several fields use different name
             'mode': 'open',
 
             /*
+             * Swords
+             * Values: 'random' for randomized swords, 'swordless' for no swords
+             */
+            'swords': 'random',
+
+            /*
              * Flute Shuffle
              * Values: 'vanilla', 'balanced', and 'random' (Equivalent to 'chaos' in the AP YAML)
              */

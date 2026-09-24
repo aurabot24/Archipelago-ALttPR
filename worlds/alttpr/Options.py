@@ -377,6 +377,12 @@ class Sprite(FreeText):
     default = "Link"
 
 
+class Quickswap(Toggle):
+    """Swap equipped items with the L and R buttons."""
+    display_name = "Quickswap"
+    default = True
+
+
 class HeartBeepRate(Choice):
     """The rate at which heart beeps are played when Link is at low health."""
     display_name = "Heart Beep Rate"
@@ -515,6 +521,7 @@ class ALttPROptions(PerGameCommonOptions):
     dungeon_counters: DungeonCounters
     trap_appearance: TrapAppearance
     sprite: Sprite
+    quickswap: Quickswap
     heart_beep_rate: HeartBeepRate
     heart_color: HeartColor
     fast_menu: FastMenu

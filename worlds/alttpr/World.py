@@ -362,7 +362,6 @@ class ALttPRWorld(World):
 
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
-        # TODO: Does the hints show vanilla in crosskeys for outdoor locations?
         if self.options.entrance_shuffle == "vanilla" and self.options.door_shuffle == "vanilla":
             return
 
@@ -588,7 +587,6 @@ class ALttPRWorld(World):
 
     def apply_player_settings(self, rom):
         ow_palettes = "default"
-        quickswap = True
         reduce_flashing = True
         shuffle_sfx = False
         shuffle_sfxinstruments = False
@@ -597,7 +595,7 @@ class ALttPRWorld(World):
         uw_palettes = "default"
 
         apply_rom_settings(rom, alttpr_options.heart_beep_rate_string_from_option(self.options.heart_beep_rate),
-                           self.options.heart_color.current_key, quickswap, self.options.fast_menu.current_key,
+                           self.options.heart_color.current_key, self.options.quickswap, self.options.fast_menu.current_key,
                            self.options.disable_music.value, self.get_sprite_file(), triforce_gfx, ow_palettes,
                            uw_palettes, reduce_flashing, shuffle_sfx, shuffle_sfxinstruments,
                            shuffle_songinstruments, self.options.msu_resume.value)
