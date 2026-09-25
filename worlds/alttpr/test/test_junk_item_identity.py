@@ -3,7 +3,7 @@ import unittest
 from types import SimpleNamespace
 
 from BaseClasses import Item, ItemClassification, Location
-from ..Items import place_junk_items_in_pots
+from ..Items import place_junk_items_locally
 
 
 class TestJunkItemIdentity(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestJunkItemIdentity(unittest.TestCase):
             options=SimpleNamespace(non_local_items=set(), local_fill_percent=0 if pots else 50),
         )
 
-        place_junk_items_in_pots(progitempool, [], filleritempool, locations, world)
+        place_junk_items_locally(progitempool, [], filleritempool, locations, world)
 
         self.assertEqual(len(pool), 1)
         self.assertIs(pool[0], unplaced)

@@ -226,7 +226,7 @@ class ALttPRWorld(World):
                   usefulitempool: typing.List[Item],
                   filleritempool: typing.List[Item],
                   fill_locations: typing.List[Location]) -> None:
-        Items.place_junk_items_in_pots(progitempool, usefulitempool, filleritempool, fill_locations, self)
+        Items.place_junk_items_locally(progitempool, usefulitempool, filleritempool, fill_locations, self)
 
 
     def post_fill(self):
