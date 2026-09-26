@@ -135,6 +135,7 @@ progressive_items = [
     "Bottle (Fairy)",
     "Bottle (Bee)",
     "Bottle (Good Bee)",
+    "Cape",
     "Cane of Byrna",
     "Cane of Somaria",
     "Crystal 1",

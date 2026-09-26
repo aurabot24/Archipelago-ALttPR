@@ -5,7 +5,7 @@ from ..Items import ItemFactory
 
 class TestDungeonLogic(ALttPRTestBaseNoDefaultTests):
     options = {
-        "crystals_required_for_ganons_tower": 0,
+        "crystals_needed_for_ganons_tower": 0,
         "small_key_shuffle": "true",
         "key_drop_shuffle": "true",
     }
@@ -28,5 +28,5 @@ class TestDungeonLogic(ALttPRTestBaseNoDefaultTests):
 
 
     def test_tile_room(self):
-        self.assertAccessDependency(["Ganons Tower - Tile Room"],
-                [["Progressive Glove", "Progressive Glove", "Moon Pearl", "Lamp", "Hookshot", "Cane of Somaria"]], only_check_listed=True)
+        self.assertCanReachWith(["Ganons Tower - Tile Room"], "location",
+                [["Progressive Glove", "Progressive Glove", "Moon Pearl", "Lamp", "Hookshot", "Cane of Somaria"]])
