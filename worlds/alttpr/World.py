@@ -2,10 +2,8 @@ import base64
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import logging
 import os
-import shutil
 import threading
 import typing
-from urllib.request import urlopen
 
 # Imports of base Archipelago modules must be absolute.
 from BaseClasses import CollectionState, Entrance, Item, ItemClassification, Location, MultiWorld, Tutorial
@@ -320,7 +318,7 @@ class ALttPRWorld(World):
             hint_text["Progressive Bow"] = " and ".join(bow_location_names)
 
         # Create a ROM patch
-        rom = ALttPRRom(self.player, self.player_name, self.seed_hash)
+        rom = ALttPRRom(self.player, self.player_name, self.seed_hash, self.options.sprite.value)
         try:
             patch_rom(self.door_rando_world, rom, 1, 1, is_mystery=False, hint_text=hint_text)
         except RuntimeError as e:
@@ -594,39 +592,13 @@ class ALttPRWorld(World):
         triforce_gfx = None
         uw_palettes = "default"
 
+        # The sprite is set in Rom.py, while running the patch file, so the person generating won't have
+        # any external dependencies.
         apply_rom_settings(rom, alttpr_options.heart_beep_rate_string_from_option(self.options.heart_beep_rate),
                            self.options.heart_color.current_key, self.options.quickswap, self.options.fast_menu.current_key,
-                           self.options.disable_music.value, self.get_sprite_file(), triforce_gfx, ow_palettes,
+                           self.options.disable_music.value, None, triforce_gfx, ow_palettes,
                            uw_palettes, reduce_flashing, shuffle_sfx, shuffle_sfxinstruments,
                            shuffle_songinstruments, self.options.msu_resume.value)
-
-
-    def get_sprite_file(self) -> str | None:
-        sprite_name = self.options.sprite.value.lower()
-        if sprite_name == "link":
-            return None
-        if not sprite_name in Sprites.sprites:
-            # This should never happen because validate_options also checks this, but better safe than sorry.
-            logger.error(f"Invalid sprite option {self.options.sprite.value}. No custom sprite will be applied.")
-            return None
-
-        world_dir = os.path.dirname(self.zip_path) if self.zip_path else os.path.join(os.path.dirname(self.__file__), "..")
-        sprite_dir = os.path.join(world_dir, "..", "data", "sprites", "alttp", "remote")
-        if not os.path.exists(sprite_dir):
-            logger.warning(f"Sprite directory {sprite_dir} does not exist. No custom sprite will be applied.")
-            return None
-
-        sprite_file = os.path.join(sprite_dir, Sprites.sprites[sprite_name]["filename"])
-        if not os.path.exists(sprite_file):
-            # TODO: Do this asynchronously
-            try:
-                with urlopen(Sprites.sprites[sprite_name]["url"], timeout=10) as response, open(sprite_file, "wb") as out:
-                    shutil.copyfileobj(response, out)
-            except Exception as e:
-                logger.error(f"Could not download sprite {sprite_name} from {Sprites.sprites[sprite_name]['url']}: {e}. No custom sprite will be applied.")
-                return None
-
-        return sprite_file
 
 
     def modify_multidata(self, multidata: dict):
