@@ -277,7 +277,7 @@ def get_dungeon_items(world: ALttPRWorld) -> List[str]:
 
 
 def get_random_filler_item_name(world: ALttPRWorld) -> str:
-    raise NotImplementedError("get_random_filler_item_name is not implemented yet")
+    return "Rupee (1)"
 
 
 def get_classification(name: str, progressive_bug_net: bool) -> ItemClassification:
