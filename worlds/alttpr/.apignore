@@ -1,3 +1,4 @@
+*.sfc
 /docs
 /test
 /ALttPDoorRandomizer/data/itemgfx
@@ -5,3 +6,4 @@
 /ALttPDoorRandomizer/data/overworld
 /ALttPDoorRandomizer/data/ER*
 /ALttPDoorRandomizer/docs
+/ALttPDoorRandomizer/OR_*
