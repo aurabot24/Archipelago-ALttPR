@@ -653,7 +653,7 @@ class ALttPRWorld(World):
         if self.options.goal in ["triforcehunt", "ganonhunt", "trinity"] and self.options.triforce_hunt_goal.value > self.options.triforce_hunt_total.value:
             errors.append("Triforce Hunt Goal cannot be greater than Triforce Hunt Total.")
 
-        sprite = self.options.sprite.value.lower()
+        sprite = self.options.sprite.value.lower() if self.options.sprite else "link"
         if sprite != "link" and sprite not in Sprites.sprites:
             errors.append(f"{self.options.sprite.value} is not a valid sprite.")
 
