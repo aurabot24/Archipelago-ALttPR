@@ -119,6 +119,8 @@ class ALttPRWorld(World):
                       "Compass (Misery Mire)",
                       "Compass (Turtle Rock)",
                       "Compass (Ganons Tower)"},
+        "Flute": {"Ocarina", "Ocarina (Activated)"},
+        "Magic Cape": {"Cape"},
         "Maps": {"Map (Escape)",
                  "Map (Eastern Palace)",
                  "Map (Desert Palace)",
@@ -132,7 +134,6 @@ class ALttPRWorld(World):
                  "Map (Misery Mire)",
                  "Map (Turtle Rock)",
                  "Map (Ganons Tower)"},
-        "Ocarina": {"Ocarina", "Ocarina (Activated)"},
         "Progressive Mail": {"Progressive Armor"}
     }
 
@@ -271,8 +272,7 @@ class ALttPRWorld(World):
                     # This is a prefilled location, probably a dungeon item
                     continue
 
-                dr_item_name = location.item.name if location.item.name not in Items.dr_ap_different_names else Items.dr_ap_different_names[location.item.name]
-                dr_item = ItemFactory(dr_item_name, 1)
+                dr_item = ItemFactory(location.item.name, 1)
             else:
                 trap_classification = None
                 # If this is trap + another classification, use the other classification
@@ -617,6 +617,37 @@ class ALttPRWorld(World):
 
 
     def validate_options(self) -> None:
+        always_invalid_starting_items = [
+            "Apples",
+            "Arrows (5)",
+            "Bee",
+            "Bee Trap",
+            "Blue Clock",
+            "Blue Potion",
+            "Bow",
+            "Chicken",
+            "Fairy",
+            "Fighter Sword",
+            "Golden Sword",
+            "Good Bee",
+            "Green Clock",
+            "Green Potion",
+            "Master Sword",
+            "Multi RNG",
+            "Nothing",
+            "Power Glove",
+            "Power Star",
+            "Red Clock",
+            "Red Potion",
+            "Rupoor",
+            "Silver Arrows",
+            "Single RNG",
+            "Small Heart",
+            "Tempered Sword",
+            "Titans Mitts",
+            "Triforce Piece",
+        ]
+        always_invalid_starting_items.extend([item for item in Items.progressive_items if item.startswith("Small Key")])
         errors = []
 
         if self.options.goal in ["triforcehunt", "ganonhunt", "trinity"] and self.options.triforce_hunt_goal.value > self.options.triforce_hunt_total.value:
@@ -631,8 +662,6 @@ class ALttPRWorld(World):
             self.options.start_inventory.value["Ocarina (Activated)"] = 1
             del self.options.start_inventory.value["Ocarina"]
 
-        always_invalid_starting_items = ["Triforce Piece", "Green Clock", "Blue Clock", "Red Clock"]
-        always_invalid_starting_items.extend([item for item in Items.progressive_items if item.startswith("Small Key")])
         invalid_items = []
         for item in start_inventory:
             if item in always_invalid_starting_items or item not in self.item_name_to_id:
