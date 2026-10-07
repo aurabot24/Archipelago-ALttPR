@@ -670,6 +670,9 @@ class ALttPRWorld(World):
         if len(invalid_items) > 0:
             errors.append("The following items are not allowed in the starting inventory: " + ", ".join(invalid_items))
 
+        if self.options.world_mode == "standard" and self.options.door_shuffle != "vanilla":
+            errors.append("Standard world mode is not allowed with door shuffle.")
+
         if len(errors) > 0:
             raise OptionError("\n".join(errors))
 
