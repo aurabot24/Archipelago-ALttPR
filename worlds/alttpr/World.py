@@ -613,7 +613,8 @@ class ALttPRWorld(World):
 
 
     def is_excluded_key_drop_location(self, location):
-        return self.door_rando_world.dropshuffle[1] == "none" and ("Key Drop" in location.name or "Pot Key" in location.name)
+        return (self.door_rando_world.dropshuffle[1] == "none" and ("Key Drop" in location.name and location.name != "Ice Palace - Hammer Block Key Drop")) or \
+               (self.door_rando_world.pottery[1] in ["none", "cave"] and ("Pot Key" in location.name or location.name == "Ice Palace - Hammer Block Key Drop"))
 
 
     def validate_options(self) -> None:
