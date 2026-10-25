@@ -274,6 +274,40 @@ class StateAdapter:
         return self.has_item("Hammer") or self.has_item("Progressive Sword")
 
 
+    def can_hit_stunned_ganon(self, player):
+        ganon_item = self.world.ganon_item[player]
+        if ganon_item == "silver":
+            return self.has_item("Silver Arrows") and self.can_shoot_arrows(player)
+        elif ganon_item == "boomerang":
+            return self.has_item("Blue Boomerang") or self.has_item("Red Boomerang")
+        elif ganon_item == "hookshot":
+            return self.has_item("Hookshot")
+        elif ganon_item == "bomb":
+            return self.can_use_bombs(player)
+        elif ganon_item == "powder":
+            return self.has_item("Magic Powder")
+        elif ganon_item == "fire_rod":
+            return self.has_item("Fire Rod")
+        elif ganon_item == "ice_rod":
+            return self.has_item("Ice Rod")
+        elif ganon_item == "bombos":
+            return self.has_item("Bombos") and self.has_sword(player)
+        elif ganon_item == "ether":
+            return self.has_item("Ether") and self.has_sword(player)
+        elif ganon_item == "quake":
+            return self.has_item("Quake") and self.has_sword(player)
+        elif ganon_item == "hammer":
+            return self.has_item("Hammer")
+        elif ganon_item == "bee":
+            return (self.has_bottle(player) and (self.has_item("Bug Catching Net") or self.can_buy_unlimited("Bee", player)))
+        elif ganon_item == "somaria":
+            return self.has_item("Cane of Somaria")
+        elif ganon_item == "byrna":
+            return self.has_item("Cane of Byrna")
+        else: # no vulnerability, must use spins
+            return self.has_item("Tempered Sword") or self.has_item("Golden Sword") or self.has_item("Lamp") or self.can_extend_magic(player, 12)
+
+
     def has_bottle(self, player) -> bool:
         return self.state.has_group("Bottles", self.player)
 

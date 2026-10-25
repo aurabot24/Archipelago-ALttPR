@@ -34,6 +34,7 @@ class Goal(Choice):
     pedestal: Collect all 3 pendants and pull the Master Sword from its pedestal.
     triforcehunt: Collect the required number of pieces of the Triforce, then talk to Murahdahla outside Hyrule Castle.
     ganonhunt: Collect the required number of pieces of the Triforce, then kill Ganon.
+    bosshunt: Kill a required number of bosses and kill Ganon.
     trinity: Either kill Ganon, pull the pedestal, or collect the required number of Triforce pieces and talk to Murahdahla outside Hyrule Castle.
     completionist: Collect every check in the game, obtain all pendants and crystals, defeat both Agahnims, then kill Ganon."""
     display_name = "Goal"
@@ -45,6 +46,7 @@ class Goal(Choice):
     option_ganonhunt = 5
     option_trinity = 6
     option_completionist = 7
+    option_bosshunt = 8
     default = "crystals"
 
 
@@ -83,6 +85,44 @@ class CrystalsNeededForGanon(Range):
     range_start = 0
     range_end = 7
     default = 7
+
+
+class BossesNeededForGanon(Range):
+    """How many boss kills are needed before Ganon can be killed in bosshunt mode"""
+    display_name = "Bosses Needed for Ganon"
+    range_start = 0
+    range_end = 12
+    default = 8
+
+
+class BosshuntIncludeAga(Toggle):
+    """Both forms of Agahnim each count as an additional boss kill for bosshunt mode"""
+    display_name = "Bosshunt Include Aga"
+
+
+class GanonVulnerabilityItem(Choice):
+    """The item Ganon is vulnerable to in phase 4"""
+    display_name = "Ganon Vulnerability Item"
+    option_silver = 0
+    option_boomerang = 1
+    option_hookshot = 2
+    option_bomb = 3
+    option_powder = 4
+    option_fire_rod = 5
+    option_ice_rod = 6
+    option_bombos = 7
+    option_ether = 8
+    option_quake = 9
+    option_hammer = 10
+    option_bee = 11
+    option_somaria = 12
+    option_byrna = 13
+    default = "silver"
+
+
+class RequireGanonItem(Toggle):
+    """Ganon is only vulnerable to his particular weakness, and cannot be killed with sword spins"""
+    display_name = "Require Ganon Vulnerability Item"
 
 
 class TriforceHuntGoal(Range):
@@ -370,10 +410,55 @@ class MirrorScroll(Toggle):
     default = False
 
 
+class CrystalBook(Toggle):
+    """The book can be used to flip the state of crystal switch pegs"""
+    display_name = "Crystal Book"
+    default = False
+
+
 class PreActivatedFlute(Toggle):
     """The Flute does not need to be activated at the village statue after finding it."""
     display_name = "Pre Activated Flute"
     default = False
+
+
+class Pseudoflute(Toggle):
+    """Psuedoflute gives Link the ability to use the flute, but only to overworld screens that have been visited (other than the desert screen, which always requires the real flute)"""
+    display_name = "Pseudoflute"
+    default = False
+
+
+class ExtraKeys(Choice):
+    """In crossed door shuffle only, adds extra small keys to each dungeon"""
+    display_name = "Extra Keys"
+    option_off = 0
+    option_one = 1
+    alias_1 = 1
+    option_twenty_percent = 2
+    alias_20_percent = 2
+    alias_20 = 2
+    option_thirty_percent = 3
+    alias_30_percent = 3
+    alias_30 = 3
+    option_forty_percent = 4
+    alias_40_percent = 4
+    alias_40 = 4
+    default = "off"
+
+
+def extra_keys_from_option(option):
+    if option == "off":
+        return 0
+    elif option == "one":
+        return 1
+    elif option == "twenty_percent":
+        return 20
+    elif option == "thirty_percent":
+        return 30
+    elif option == "forty_percent":
+        return 40
+    else:
+        raise Exception(f"Invalid option {option} for ExtraKeys")
 
 
 class DungeonCounters(Choice):
@@ -385,6 +470,43 @@ class DungeonCounters(Choice):
     option_pickup = 1
     option_off = 2
     default = "pickup"
+
+
+class ShowChecksOnMap(Choice):
+    """Displays an indicator on dungeon maps for uncollected items.
+    If presence is selected, a generic indicator will show when a check is remaining.
+    If compass is selected, the tier of best item in each tile will show once the compass has been collected.
+    If always is selected, the tier of best item will always be shown on each tile."""
+    display_name = "Show Checks on Map"
+    option_never = 0
+    option_presence = 1
+    option_compass = 2
+    option_always = 3
+    default = "presence"
+
+
+class ShowChecksOnHud(Choice):
+    """Displays an indicator on the in-game HUD for uncollected items.
+    If presence is selected, a generic indicator will show when a check is remaining.
+    If value is selected, the tier of best item will always be shown on each tile.
+    Checks that require turning in an item to an NPC will never display value, and instead show as a speech bubble."""
+    display_name = "Show Checks on HUD"
+    option_never = 0
+    option_presence = 1
+    option_value = 2
+    default = "never"
+
+
+class ShowDungeonMaps(Choice):
+    """Controls when to display outlines of tiles in the dungeon map.
+    If visited is selected, will show undetailed squares for tiles that have not been visited, and a detailed outline for tiles that have been visited.
+    If map is selected, will show details for visited tiles and tiles in dungeons for which the map has been collected.
+    If always is selected, will show details for all tiles."""
+    display_name = "Show Dungeon Maps"
+    option_visited = 0
+    option_map = 1
+    option_always = 2
+    default = "map"
 
 
 class TrapAppearance(Choice):
@@ -523,6 +645,10 @@ class ALttPROptions(PerGameCommonOptions):
     open_pyramid: OpenPyramid
     crystals_needed_for_ganons_tower: CrystalsNeededForGanonsTower
     crystals_needed_for_ganon: CrystalsNeededForGanon
+    bosses_needed_for_ganon: BossesNeededForGanon
+    bosshunt_include_aga: BosshuntIncludeAga
+    ganon_vulnerability_item: GanonVulnerabilityItem
+    require_ganon_item: RequireGanonItem
     triforce_hunt_goal: TriforceHuntGoal
     triforce_hunt_total: TriforceHuntTotal
     map_shuffle: MapShuffle
@@ -551,9 +677,15 @@ class ALttPROptions(PerGameCommonOptions):
     enemy_drop_shuffle: EnemyDropShuffle
     local_fill_percent: LocalFillPercent
     pre_activated_flute: PreActivatedFlute
+    pseudoflute: Pseudoflute
     pseudoboots: Pseudoboots
     mirror_scroll: MirrorScroll
+    crystal_book: CrystalBook
     dungeon_counters: DungeonCounters
+    show_checks_on_map: ShowChecksOnMap
+    show_checks_on_hud: ShowChecksOnHud
+    show_dungeon_maps: ShowDungeonMaps
+    extra_keys: ExtraKeys
     trap_appearance: TrapAppearance
     sprite: Sprite
     local_sprite: LocalSprite
@@ -579,6 +711,10 @@ alttpr_option_groups: list[OptionGroup] = [
             OpenPyramid,
             CrystalsNeededForGanon,
             CrystalsNeededForGanonsTower,
+            BossesNeededForGanon,
+            BosshuntIncludeAga,
+            GanonVulnerabilityItem,
+            RequireGanonItem,
             TriforceHuntGoal,
             TriforceHuntTotal,
         ],
@@ -634,7 +770,13 @@ alttpr_option_groups: list[OptionGroup] = [
         [
             Pseudoboots,
             MirrorScroll,
+            CrystalBook,
             PreActivatedFlute,
+            Pseudoflute,
+            ShowChecksOnMap,
+            ShowChecksOnHud,
+            ShowDungeonMaps,
+            ExtraKeys,
             DungeonCounters,
             TrapAppearance,
             Sprite,

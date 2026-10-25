@@ -512,7 +512,7 @@ def get_event_locations(world: ALttPRWorld):
         event_locations["Murahdahla"] = "Triforce"
     if goal == "pedestal" or goal == "trinity":
         event_locations["Master Sword Pedestal"] = "Triforce"
-    if world.options.world_mode.current_key != "inverted" and not world.options.pre_activated_flute.value:
+    if world.options.world_mode.current_key != "inverted" and not world.options.pre_activated_flute.value and not world.options.pseudoflute.value:
         event_locations["Flute Activation"] = "Ocarina (Activated)"
 
     return event_locations

@@ -430,11 +430,14 @@ class ALttPRWorld(World):
         self.door_rando_world.bigkeyshuffle = {1: "wild" if self.options.big_key_shuffle.value else "none"}
         self.door_rando_world.bombbag = {1: self.options.bombless_start.value}
         self.door_rando_world.boots_hint = {1: False}
+        self.door_rando_world.bosses_ganon = {1: self.options.bosses_needed_for_ganon.value}
+        self.door_rando_world.bosshunt_include_agas = {1: self.options.bosshunt_include_aga.value}
         self.door_rando_world.boss_shuffle = {1: alttpr_options.boss_shuffle_string_from_option(self.options.boss_shuffle)}
         self.door_rando_world.bow_mode = {1: "progressive"}
         self.door_rando_world.compassshuffle = {1: "wild" if self.options.compass_shuffle.value else "none"}
         self.door_rando_world.crystals_needed_for_gt = {1: self.options.crystals_needed_for_ganons_tower.value}
         self.door_rando_world.crystals_needed_for_ganon = {1: self.options.crystals_needed_for_ganon.value}
+        self.door_rando_world.crystal_book = {1: self.options.crystal_book.value}
         self.door_rando_world.customizer = None
         self.door_rando_world.door_type_mode = {1: self.options.door_type_shuffle.current_key}
         self.door_rando_world.dropshuffle = {1: dropshuffle}
@@ -443,12 +446,15 @@ class ALttPRWorld(World):
             1: alttpr_options.enemy_shuffle_string_from_option(self.options.enemy_shuffle)}
         self.door_rando_world.experimental = {
             1: False}  # This makes you a bunny if your spawn point is in the dark world
-        self.door_rando_world.flute_mode = {1: "active" if self.options.pre_activated_flute.value else "normal"}
+        self.door_rando_world.extra_keys = {1: alttpr_options.extra_keys_from_option(self.options.extra_keys)}
+        self.door_rando_world.flute_mode = {1: "pseudo" if self.options.pseudoflute.value else "active" if self.options.pre_activated_flute.value else "normal"}
         self.door_rando_world.free_lamp_cone = {1: self.options.pseudolamp.value}
+        self.door_rando_world.ganon_item = {1: self.options.ganon_vulnerability_item.current_key}
         self.door_rando_world.intensity = {1: 2 if not self.options.lobby_shuffle.value else 3}  # No door shuffle
         self.door_rando_world.keyshuffle = {1: "none" if not self.options.small_key_shuffle.value else "wild"}
         self.door_rando_world.linked_drops = {1: "unset" if self.options.linked_drops else "independent"}  # In entrance shuffle, whether dropdowns link with their matching exit is determined by the entrance setting
         self.door_rando_world.lock_aga_door_in_escape = True
+        self.door_rando_world.loothud = {1: self.options.show_checks_on_hud.current_key}
         self.door_rando_world.mapshuffle = {1: "wild" if self.options.map_shuffle.value else "none"}
         self.door_rando_world.mirrorscroll = {1: self.options.mirror_scroll.value or shuffled_doors}
         self.door_rando_world.open_pyramid = {1: alttpr_options.open_pyramid_string_from_option(self.options.open_pyramid)}
@@ -462,9 +468,12 @@ class ALttPRWorld(World):
         self.door_rando_world.pottery = {1: pottery}
         self.door_rando_world.prizeshuffle = {1: "none" if not self.options.prize_shuffle.value else "wild"}
         self.door_rando_world.pseudoboots = {1: self.options.pseudoboots.value}
+        self.door_rando_world.require_ganon_item = {1: self.options.require_ganon_item.value}
         self.door_rando_world.rom_seeds = {1: self.random.randint(0, 999999999)}
         self.door_rando_world.settings = CustomSettings()
         self.door_rando_world.shopsanity = {1: self.options.shopsanity.value}
+        self.door_rando_world.showloot = {1: self.options.show_checks_on_map.current_key}
+        self.door_rando_world.showmap = {1: self.options.show_dungeon_maps.current_key}
         self.door_rando_world.shuffle_bonk_drops = {1: False}
         self.door_rando_world.shuffle_followers = {1: False}
         self.door_rando_world.shufflelinks = {1: self.options.shuffle_links_house.value}
@@ -537,10 +546,10 @@ class ALttPRWorld(World):
 
         if self.options.shopsanity.value:
             sell_potions(self.door_rando_world, 1)
-            # Red Potions and Bees make sense as an item to purchase, but not as a random item to receive.
+            # Red Potions make sense as an item to purchase, but not as a random item to receive.
             # Usually they turn into rupees upon receiving them from another player, which is confusing.
             for item in self.door_rando_world.get_items():
-                if item.name == "Bee" or (item.name == "Red Potion" and not item.priority):
+                if item.name == "Red Potion" and not item.priority:
                     self.door_rando_world.itempool.remove(item)
                     self.door_rando_world.itempool.append(ItemFactory("Rupees (20)", 1))
 
@@ -652,9 +661,15 @@ class ALttPRWorld(World):
         if self.options.goal in ["triforcehunt", "ganonhunt", "trinity"] and self.options.triforce_hunt_goal.value > self.options.triforce_hunt_total.value:
             errors.append("Triforce Hunt Goal cannot be greater than Triforce Hunt Total.")
 
+        if self.options.goal in ["bosshunt"] and not self.options.bosshunt_include_aga.value and self.options.bosses_needed_for_ganon.value > 10:
+            errors.append("Bosshunt Goal cannot require more than 10 bosses without including Agahnim.")
+
         sprite = self.options.sprite.value.lower() if self.options.sprite else "link"
         if sprite != "link" and sprite not in Sprites.sprites:
             errors.append(f"{self.options.sprite.value} is not a valid sprite.")
+
+        if self.options.swordless.value and self.options.ganon_vulnerability_item in ["bombos", "ether", "quake"]:
+            errors.append(f"Swordless mode cannot require {self.optinos.ganon_vulnerability_item.value} to defeat Ganon.")
 
         start_inventory = self.options.start_inventory.value.keys()
         if "Ocarina" in start_inventory and (self.options.pre_activated_flute or self.options.world_mode == "inverted"):
