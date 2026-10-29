@@ -106,17 +106,16 @@ class GanonVulnerabilityItem(Choice):
     option_silver = 0
     option_boomerang = 1
     option_hookshot = 2
-    option_bomb = 3
-    option_powder = 4
-    option_fire_rod = 5
-    option_ice_rod = 6
-    option_bombos = 7
-    option_ether = 8
-    option_quake = 9
-    option_hammer = 10
-    option_bee = 11
-    option_somaria = 12
-    option_byrna = 13
+    option_powder = 3
+    option_fire_rod = 4
+    option_ice_rod = 5
+    option_bombos = 6
+    option_ether = 7
+    option_quake = 8
+    option_hammer = 9
+    option_bee = 10
+    option_somaria = 11
+    option_byrna = 12
     default = "silver"
 
 

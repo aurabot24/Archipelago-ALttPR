@@ -299,7 +299,7 @@ class ALttPRWorld(World):
         if self.options.shopsanity.value:
             customize_shops(self.door_rando_world, 1)
 
-        # Create hints for Saha and the Bomb Shop, if their prizes are in another world, and silver arrows
+        # Create hints for Saha and the Bomb Shop, if their prizes are in another world
         hint_text = {}
         if self.options.prize_shuffle.value:
             for item_name in ["Crystal 5", "Crystal 6", "Green Pendant"]:
@@ -307,10 +307,40 @@ class ALttPRWorld(World):
                     item_location = self.multiworld.find_item(item_name, self.player)
                     if item_location.player != self.player:
                         hint_text[item_name] = f"at {self.multiworld.player_name[item_location.player]}'s {item_location.name}"
-        bow_locations = self.multiworld.find_item_locations("Progressive Bow", self.player)
-        if any([location.player != self.player for location in bow_locations]):
-            bow_location_names = [location.name if location.player == self.player else f"{self.multiworld.player_name[location.player]}'s {location.name}" for location in bow_locations]
-            hint_text["Progressive Bow"] = " and ".join(bow_location_names)
+
+        # Create hint for ganon's vulnerability item
+        ganon_item_locations = []
+        if self.options.ganon_vulnerability_item == "silver":
+            ganon_item_locations = self.multiworld.find_item_locations("Progressive Bow", self.player)
+        elif self.options.ganon_vulnerability_item == "boomerang":
+            ganon_item_locations = self.multiworld.find_item_locations("Red Boomerang", self.player) + self.multiworld.find_item_locations("Blue Boomerang", self.player)
+        elif self.options.ganon_vulnerability_item == "hookshot":
+            ganon_item_locations = self.multiworld.find_item_locations("Hookshot", self.player)
+        elif self.options.ganon_vulnerability_item == "powder":
+            ganon_item_locations = self.multiworld.find_item_locations("Magic Powder", self.player)
+        elif self.options.ganon_vulnerability_item == "fire_rod":
+            ganon_item_locations = self.multiworld.find_item_locations("Fire Rod", self.player)
+        elif self.options.ganon_vulnerability_item == "ice_rod":
+            ganon_item_locations = self.multiworld.find_item_locations("Ice Rod", self.player)
+        elif self.options.ganon_vulnerability_item == "bombos":
+            ganon_item_locations = self.multiworld.find_item_locations("Bombos", self.player)
+        elif self.options.ganon_vulnerability_item == "ether":
+            ganon_item_locations = self.multiworld.find_item_locations("Ether", self.player)
+        elif self.options.ganon_vulnerability_item == "quake":
+            ganon_item_locations = self.multiworld.find_item_locations("Quake", self.player)
+        elif self.options.ganon_vulnerability_item == "hammer":
+            ganon_item_locations = self.multiworld.find_item_locations("Hammer", self.player)
+        elif self.options.ganon_vulnerability_item == "somaria":
+            ganon_item_locations = self.multiworld.find_item_locations("Cane of Somaria", self.player)
+        elif self.options.ganon_vulnerability_item == "byrna":
+            ganon_item_locations = self.multiworld.find_item_locations("Cane of Byrna", self.player)
+
+        hint_text["Ganon Item"] = [
+            self.door_rando_world.get_location(location.name, 1).hint_text.replace("Ganon's", "my")
+            if location.player == self.player
+            else f"at {self.multiworld.player_name[location.player]}'s {location.name}"
+            for location in ganon_item_locations
+        ]
 
         # Create a ROM patch
         rom = ALttPRRom(self.player, self.player_name, self.seed_hash, self.options.sprite.value if not self.options.local_sprite else "local")
@@ -579,7 +609,7 @@ class ALttPRWorld(World):
             short_item_name = "Filler Item"
 
         dr_item.fluteboy_credit_text = f"{item_name if len(item_name) <= 20 else short_item_name} boy returns"
-        dr_item.hint_text = f"a {item_name}"
+        dr_item.hint_text = f"a {item_name} for {self.multiworld.player_name[ap_item.player]}"
         dr_item.magicshop_credit_text = f"shrooms for {item_name if len(item_name) <= 20 else short_item_name}"
         dr_item.pedestal_credit_text = f"and the {item_name if len(item_name) <= 24 else short_item_name}"
         dr_item.pedestal_hint_text = f"{self.multiworld.player_name[ap_item.player]}'s\n{item_name}!"
