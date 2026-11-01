@@ -471,6 +471,12 @@ class DungeonCounters(Choice):
     default = "pickup"
 
 
+class CollectionRate(Toggle):
+    """Displays the overall collection rate in the top-right corner. Always enabled for Completionist, and always disabled for Triforce Hunt."""
+    display_name = "Collection Rate"
+    default = False
+
+
 class ShowChecksOnMap(Choice):
     """Displays an indicator on dungeon maps for uncollected items.
     If presence is selected, a generic indicator will show when a check is remaining.
@@ -681,6 +687,7 @@ class ALttPROptions(PerGameCommonOptions):
     mirror_scroll: MirrorScroll
     crystal_book: CrystalBook
     dungeon_counters: DungeonCounters
+    collection_rate: CollectionRate
     show_checks_on_map: ShowChecksOnMap
     show_checks_on_hud: ShowChecksOnHud
     show_dungeon_maps: ShowDungeonMaps
@@ -743,6 +750,7 @@ alttpr_option_groups: list[OptionGroup] = [
             EnemyShuffle,
             BossShuffle,
             Pseudolamp,
+            CrystalBook,
         ],
     ),
     OptionGroup(
@@ -762,6 +770,7 @@ alttpr_option_groups: list[OptionGroup] = [
             DoorShuffle,
             DoorTypeShuffle,
             LobbyShuffle,
+            ExtraKeys,
         ],
     ),
     OptionGroup(
@@ -769,14 +778,13 @@ alttpr_option_groups: list[OptionGroup] = [
         [
             Pseudoboots,
             MirrorScroll,
-            CrystalBook,
             PreActivatedFlute,
             Pseudoflute,
             ShowChecksOnMap,
             ShowChecksOnHud,
             ShowDungeonMaps,
-            ExtraKeys,
             DungeonCounters,
+            CollectionRate,
             TrapAppearance,
             Sprite,
             LocalSprite,

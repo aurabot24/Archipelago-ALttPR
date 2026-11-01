@@ -28,6 +28,8 @@ class TestMimicCaveEnemyDropShuffle(ALttPRTestBaseNoDefaultTests):
         # Mimic Cave is at the Red Shield Shop. Need entrance shuffle to check if the back enemies
         # are dependent on Hammer, which is always needed to reach the vanilla location
         slot_data = deepcopy(slot_data_crossed.slot_data)
+        slot_data["entrances"][1]["two-way"]["Bumper Cave (Bottom)"] = "Elder House Exit (West)"
+        slot_data["entrances"][1]["two-way"]["Hammer Peg Cave"] = "Ganons Tower Exit"
         self.options["test_slot_data"] = slot_data
         self.world_setup()
 
