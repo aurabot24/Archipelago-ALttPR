@@ -193,6 +193,9 @@ class StateAdapter:
 
 
     def can_reach_blue(self, region, player) -> bool:
+        if self.world.crystal_book[1] and self.has_item("Book of Mudora"):
+            return True
+
         if self.world.doorShuffle[1] == "vanilla":
             # This will be the simple version for non-door rando. In general, if you can reach
             # blue blocks you can also reach a crystal switch.
@@ -215,7 +218,7 @@ class StateAdapter:
 
 
     def can_reach_orange(self, region, player) -> bool:
-        if self.world.doorShuffle[1] == "vanilla":
+        if self.world.doorShuffle[1] == "vanilla" or (self.has_item("Book of Mudora") and self.world.crystal_book[1]):
             return True
         else:
             if self.alttpr_stale_crystal_regions[self.player]:

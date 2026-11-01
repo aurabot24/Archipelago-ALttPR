@@ -246,7 +246,7 @@ class ALttPRWorld(World):
     # Our world class must also have a create_item function that can create any one of our items by name at any time.
     def create_item(self, name: str, classification: ItemClassification = ItemClassification.filler) -> Items.ALttPRItem:
         try:
-            classification = Items.get_classification(name, self.options.door_shuffle != "vanilla" or self.options.boss_shuffle != "vanilla")
+            classification = Items.get_classification(name, self.is_bug_net_progression())
         except Exception:
             # Unknown item, should never reach here, but also shouldn't crash if we do
             pass
@@ -464,7 +464,7 @@ class ALttPRWorld(World):
         self.door_rando_world.bosshunt_include_agas = {1: self.options.bosshunt_include_aga.value}
         self.door_rando_world.boss_shuffle = {1: alttpr_options.boss_shuffle_string_from_option(self.options.boss_shuffle)}
         self.door_rando_world.bow_mode = {1: "progressive"}
-        self.door_rando_world.collection_rate = {1: True}
+        self.door_rando_world.collection_rate = {1: self.options.collection_rate.value}
         self.door_rando_world.compassshuffle = {1: "wild" if self.options.compass_shuffle.value else "none"}
         self.door_rando_world.crystals_needed_for_gt = {1: self.options.crystals_needed_for_ganons_tower.value}
         self.door_rando_world.crystals_needed_for_ganon = {1: self.options.crystals_needed_for_ganon.value}
@@ -645,6 +645,10 @@ class ALttPRWorld(World):
             multidata["connect_names"][new_name] = multidata["connect_names"][self.multiworld.player_name[self.player]]
         else:
             logger.error("ROM name is not set, cannot make needed multiworld changes in modify_multidata()")
+
+
+    def is_bug_net_progression(self):
+        return self.options.door_shuffle != "vanilla" or self.options.boss_shuffle != "vanilla" or self.options.ganon_vulnerability_item == "bee"
 
 
     def is_excluded_key_drop_location(self, location):
