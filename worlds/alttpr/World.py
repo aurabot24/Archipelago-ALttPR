@@ -465,6 +465,7 @@ class ALttPRWorld(World):
         self.door_rando_world.boss_shuffle = {1: alttpr_options.boss_shuffle_string_from_option(self.options.boss_shuffle)}
         self.door_rando_world.bow_mode = {1: "progressive"}
         self.door_rando_world.collection_rate = {1: self.options.collection_rate.value}
+        self.door_rando_world.junk_item_frames = {1: self.options.junk_item_frames.value}
         self.door_rando_world.compassshuffle = {1: "wild" if self.options.compass_shuffle.value else "none"}
         self.door_rando_world.crystals_needed_for_gt = {1: self.options.crystals_needed_for_ganons_tower.value}
         self.door_rando_world.crystals_needed_for_ganon = {1: self.options.crystals_needed_for_ganon.value}

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from Options import Choice, FreeText, OptionDict, OptionGroup, PerGameCommonOptions, Range, TextChoice, Toggle, Visibility
+from Options import Choice, FreeText, NamedRange, OptionDict, OptionGroup, PerGameCommonOptions, Range, TextChoice, Toggle, Visibility
 
 
 class WorldMode(Choice):
@@ -477,6 +477,19 @@ class CollectionRate(Toggle):
     default = False
 
 
+class JunkItemFrames(NamedRange):
+    """Reduces the number of frames Link holds unimportant items above his head."""
+    display_name = "Junk Item Frames"
+    range_start = 8
+    range_end = 58
+    special_range_names = {
+        "vanilla": 0,
+        "very_fast": 8,
+        "fast": 16,
+    }
+    default = "fast"
+
+
 class ShowChecksOnMap(Choice):
     """Displays an indicator on dungeon maps for uncollected items.
     If presence is selected, a generic indicator will show when a check is remaining.
@@ -688,6 +701,7 @@ class ALttPROptions(PerGameCommonOptions):
     crystal_book: CrystalBook
     dungeon_counters: DungeonCounters
     collection_rate: CollectionRate
+    junk_item_frames: JunkItemFrames
     show_checks_on_map: ShowChecksOnMap
     show_checks_on_hud: ShowChecksOnHud
     show_dungeon_maps: ShowDungeonMaps
@@ -785,6 +799,7 @@ alttpr_option_groups: list[OptionGroup] = [
             ShowDungeonMaps,
             DungeonCounters,
             CollectionRate,
+            JunkItemFrames,
             TrapAppearance,
             Sprite,
             LocalSprite,
