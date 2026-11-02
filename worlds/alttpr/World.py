@@ -401,6 +401,20 @@ class ALttPRWorld(World):
                         hint_data[self.player][location.address] = ", ".join(outdoor_entrances)
 
 
+    def write_spoiler(self, spoiler_handle: typing.TextIO) -> None:
+        if self.options.entrance_shuffle == "vanilla":
+            return
+
+        spoiler_handle.write(f"\n\nEntrances ({self.multiworld.player_name[self.player]}):\n\n")
+        if self.options.entrance_shuffle == "crossed":
+            for entrance in Regions.entrance_list:
+                spoiler_handle.write(f"{entrance} -> {self.get_entrance(entrance).connected_region.name}\n")
+        else:
+            # Dungeon-only entrance shuffle
+            for entrance in Regions.dungeon_entrances:
+                spoiler_handle.write(f"{entrance} -> {self.get_entrance(entrance).connected_region.name}\n")
+
+
     #########################################
     # Overridden Methods
     #########################################
