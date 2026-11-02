@@ -1,4 +1,4 @@
-from bases import ALttPRTestBase
+from ..bases import ALttPRTestBase
 
 
 class TestStandard(ALttPRTestBase):

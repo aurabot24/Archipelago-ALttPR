@@ -1,5 +1,5 @@
 from Options import OptionError
-from bases import ALttPRTestBase
+from ..bases import ALttPRTestBase
 
 
 class TestInvalidOptions(ALttPRTestBase):

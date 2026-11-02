@@ -183,6 +183,8 @@ class TestBigBombShopInNorthDarkWorld(BigBombShopEntranceShuffleBase):
         slot_data = deepcopy(slot_data_crossed.slot_data)
         slot_data["entrances"][1]["entrances"]["Dark Lake Hylia Ledge Fairy"] = "20 Rupee Cave"
         slot_data["entrances"][1]["entrances"]["Thieves Town"] = "Big Bomb Shop"
+        slot_data["entrances"][1]["two-way"]["Bumper Cave (Bottom)"] = "Elder House Exit (West)"
+        slot_data["entrances"][1]["two-way"]["Hammer Peg Cave"] = "Ganons Tower Exit"
         self.options["test_slot_data"] = slot_data
         self.world_setup()
 
@@ -260,6 +262,8 @@ class TestBigBombShopInBackOfSkull(BigBombShopEntranceShuffleBase):
         slot_data = deepcopy(slot_data_crossed.slot_data)
         slot_data["entrances"][1]["entrances"]["Dark Lake Hylia Ledge Fairy"] = "Lake Hylia Shop"
         slot_data["entrances"][1]["entrances"]["Skull Woods Final Section"] = "Big Bomb Shop"
+        slot_data["entrances"][1]["two-way"]["Bumper Cave (Bottom)"] = "Elder House Exit (West)"
+        slot_data["entrances"][1]["two-way"]["Hammer Peg Cave"] = "Ganons Tower Exit"
         self.options["test_slot_data"] = slot_data
         self.world_setup()
 

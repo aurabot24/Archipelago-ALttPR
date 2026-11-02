@@ -1,4 +1,4 @@
-from bases import ALttPRTestBase
+from ..bases import ALttPRTestBase
 
 
 # Testing if someone goes crazy and enables every setting they can.
