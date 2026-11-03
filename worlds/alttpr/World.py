@@ -405,13 +405,12 @@ class ALttPRWorld(World):
             return
 
         spoiler_handle.write(f"\n\nEntrances ({self.multiworld.player_name[self.player]}):\n\n")
-        if self.options.entrance_shuffle == "crossed":
-            for entrance in Regions.entrance_list:
-                spoiler_handle.write(f"{entrance} -> {self.get_entrance(entrance).connected_region.name}\n")
-        else:
-            # Dungeon-only entrance shuffle
-            for entrance in Regions.dungeon_entrances:
-                spoiler_handle.write(f"{entrance} -> {self.get_entrance(entrance).connected_region.name}\n")
+        entrances = Regions.dungeon_entrances if self.options.entrance_shuffle in ["dungeonssimple", "dungeonsfull"] else Regions.entrance_list
+        for entrance in entrances:
+            destination = self.get_entrance(entrance).connected_region.name
+            if destination in Regions.dungeon_portals_to_names:
+                destination = Regions.dungeon_portals_to_names[destination]
+            spoiler_handle.write(f"{entrance} -> {destination}\n")
 
 
     #########################################

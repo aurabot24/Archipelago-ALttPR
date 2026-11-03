@@ -79,64 +79,6 @@ class ALttPRCrystalPath:
         return set(self.path).issubset(set(other.path))
 
 
-dungeon_portals = {
-    "Hyrule Castle": ["Hyrule Castle South Portal", "Hyrule Castle West Portal", "Hyrule Castle East Portal", "Sanctuary Portal", "Sewer Drop"],
-    "Eastern Palace": ["Eastern Portal"],
-    "Desert Palace": ["Desert South Portal", "Desert East Portal", "Desert West Portal", "Desert Back Portal"],
-    "Tower of Hera": ["Hera Portal"],
-    "Agahnims Tower": ["Agahnims Tower Portal"],
-    "Palace of Darkness": ["Palace of Darkness Portal"],
-    "Swamp Palace": ["Swamp Portal"],
-    "Skull Woods": ["Skull 1 Portal", "Skull 2 West Portal", "Skull 2 East Portal", "Skull 3 Portal", "Skull Pinball",
-                    "Skull Pot Circle", "Skull Left Drop", "Skull Back Drop"],
-    "Thieves Town": ["Thieves Town Portal"],
-    "Ice Palace": ["Ice Portal"],
-    "Misery Mire": ["Mire Portal"],
-    "Turtle Rock": ["Turtle Rock Main Portal", "Turtle Rock Lazy Eyes Portal", "Turtle Rock Chest Portal", "Turtle Rock Eye Bridge Portal"],
-    "Ganons Tower": ["Ganons Tower Portal"],
-}
-
-glitched_only_entrances = [
-    "Ice Lake Iceberg Bomb Jump",
-]
-
-# Regions that can only be reached in glitched modes
-glitched_only_regions = [
-    "Central Cliffs",
-    "Chris Houlihan Room",
-    "Dark Central Cliffs",
-    "Darkness Cliff",
-    "Desert Northern Cliffs",
-    "Eastern Cliff",
-    "Hyrule Castle Water",
-    "Mire Northern Cliffs",
-    "Pyramid Water",
-]
-
-glitched_or_inverted_only_regions = [
-    "Ice Lake Iceberg",
-]
-
-inverted_only_regions = [
-    "Spiral Mimic Ledge Extend",
-]
-
-unreachable_entrances = [
-    "PoD Arena Right to Ranged Crystal",
-    "PoD Arena Ledge to Ranged Crystal",
-    "GT Double Switch Entry to Ranged Switches",
-    "GT Double Switch Pot Corners to Ranged Switches",
-]
-
-# ??????????
-unreachable_regions = [
-    "PoD Arena Ledge - Ranged Crystal",
-    "PoD Arena Right - Ranged Crystal",
-    "GT Double Switch Entry - Ranged Switches",
-    "GT Double Switch Pot Corners - Ranged Switches",
-]
-
-
 def create_and_connect_regions(world: ALttPRWorld) -> None:
     # First define every region, then loop through a second time to connect them.
     # Otherwise we're trying to connect to regions that don't exist yet.
@@ -570,6 +512,56 @@ def init_lookups():
 
 init_lookups()
 
+
+dungeon_portals = {
+    "Hyrule Castle": ["Hyrule Castle South Portal", "Hyrule Castle West Portal", "Hyrule Castle East Portal", "Sanctuary Portal", "Sewer Drop"],
+    "Eastern Palace": ["Eastern Portal"],
+    "Desert Palace": ["Desert South Portal", "Desert East Portal", "Desert West Portal", "Desert Back Portal"],
+    "Tower of Hera": ["Hera Portal"],
+    "Agahnims Tower": ["Agahnims Tower Portal"],
+    "Palace of Darkness": ["Palace of Darkness Portal"],
+    "Swamp Palace": ["Swamp Portal"],
+    "Skull Woods": ["Skull 1 Portal", "Skull 2 West Portal", "Skull 2 East Portal", "Skull 3 Portal", "Skull Pinball",
+                    "Skull Pot Circle", "Skull Left Drop", "Skull Back Drop"],
+    "Thieves Town": ["Thieves Town Portal"],
+    "Ice Palace": ["Ice Portal"],
+    "Misery Mire": ["Mire Portal"],
+    "Turtle Rock": ["Turtle Rock Main Portal", "Turtle Rock Lazy Eyes Portal", "Turtle Rock Chest Portal", "Turtle Rock Eye Bridge Portal"],
+    "Ganons Tower": ["Ganons Tower Portal"],
+}
+
+dungeon_portals_to_names = {
+    "Hyrule Castle South Portal": "Hyrule Castle Entrance (South)",
+    "Hyrule Castle West Portal": "Hyrule Castle Entrance (West)",
+    "Hyrule Castle East Portal": "Hyrule Castle Entrance (East)",
+    "Sanctuary Portal": "Sanctuary",
+    "Eastern Portal": "Eastern Palace",
+    "Desert South Portal": "Desert Palace Entrance (South)",
+    "Desert East Portal": "Desert Palace Entrance (East)",
+    "Desert West Portal": "Desert Palace Entrance (West)",
+    "Desert Back Portal": "Desert Palace Entrance (North)",
+    "Hera Portal": "Tower of Hera",
+    "Agahnims Tower Portal": "Agahnims Tower",
+    "Palace of Darkness Portal": "Palace of Darkness",
+    "Swamp Portal": "Swamp Palace",
+    "Skull 1 Portal": "Skull Woods First Section",
+    "Skull 2 West Portal": "Skull Woods Second Section (West)",
+    "Skull 2 East Portal": "Skull Woods Second Section (East)",
+    "Skull 3 Portal": "Skull Woods Final Section",
+    "Skull Pinball": "Skull Pinball",
+    "Skull Pot Circle": "Skull Pot Circle",
+    "Skull Left Drop": "Skull Left Drop",
+    "Skull Back Drop": "Skull Back Drop",
+    "Thieves Town Portal": "Thieves Town",
+    "Ice Portal": "Ice Palace",
+    "Mire Portal": "Misery Mire",
+    "Turtle Rock Main Portal": "Turtle Rock Main",
+    "Turtle Rock Lazy Eyes Portal": "Turtle Rock Lazy Eyes",
+    "Turtle Rock Chest Portal": "Turtle Rock Chest",
+    "Turtle Rock Eye Bridge Portal": "Turtle Rock Eye Bridge",
+    "Ganons Tower Portal": "Ganons Tower",
+}
+
 dungeon_entrances = [
     'Hyrule Castle Entrance (South)',
     'Hyrule Castle Entrance (West)',
@@ -601,6 +593,46 @@ dungeon_entrances = [
     'Dark Death Mountain Ledge (East)',
     'Turtle Rock Isolated Ledge Entrance',
     'Ganons Tower',
+]
+
+glitched_only_entrances = [
+    "Ice Lake Iceberg Bomb Jump",
+]
+
+# Regions that can only be reached in glitched modes
+glitched_only_regions = [
+    "Central Cliffs",
+    "Chris Houlihan Room",
+    "Dark Central Cliffs",
+    "Darkness Cliff",
+    "Desert Northern Cliffs",
+    "Eastern Cliff",
+    "Hyrule Castle Water",
+    "Mire Northern Cliffs",
+    "Pyramid Water",
+]
+
+glitched_or_inverted_only_regions = [
+    "Ice Lake Iceberg",
+]
+
+inverted_only_regions = [
+    "Spiral Mimic Ledge Extend",
+]
+
+unreachable_entrances = [
+    "PoD Arena Right to Ranged Crystal",
+    "PoD Arena Ledge to Ranged Crystal",
+    "GT Double Switch Entry to Ranged Switches",
+    "GT Double Switch Pot Corners to Ranged Switches",
+]
+
+# ??????????
+unreachable_regions = [
+    "PoD Arena Ledge - Ranged Crystal",
+    "PoD Arena Right - Ranged Crystal",
+    "GT Double Switch Entry - Ranged Switches",
+    "GT Double Switch Pot Corners - Ranged Switches",
 ]
 
 entrance_list = [
