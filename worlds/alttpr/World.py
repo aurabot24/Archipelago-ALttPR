@@ -285,11 +285,11 @@ class ALttPRWorld(World):
                         trap_classification = self.random.choice([ItemClassification.progression, ItemClassification.useful, ItemClassification.filler])
 
                 if location.item.classification & ItemClassification.progression or trap_classification == ItemClassification.progression:
-                    dr_item = ItemFactory("Progression AP Item", 1)
+                    dr_item = ItemFactory("Progression AP Item", 1, location.item.player)
                 elif location.item.classification & ItemClassification.useful or trap_classification == ItemClassification.useful:
-                    dr_item = ItemFactory("Useful AP Item", 1)
+                    dr_item = ItemFactory("Useful AP Item", 1, location.item.player)
                 else:
-                    dr_item = ItemFactory("Filler AP Item", 1)
+                    dr_item = ItemFactory("Filler AP Item", 1, location.item.player)
 
                 self.set_hint_and_credits_text(dr_item, location.item)
 
@@ -359,10 +359,9 @@ class ALttPRWorld(World):
         # Set AP player names in the ROM
         ROM_PLAYER_LIMIT = 255
         encoded_players = self.multiworld.players + len(self.multiworld.groups)
-        for p in range(1, min(encoded_players, ROM_PLAYER_LIMIT) + 1):
+        for p in range(1, min(encoded_players + 1, ROM_PLAYER_LIMIT)):
             rom.write_bytes(0x195FFC + ((p - 1) * 32), hud_format_text(self.multiworld.player_name[p]))
-        if encoded_players > ROM_PLAYER_LIMIT:
-            rom.write_bytes(0x195FFC + ((ROM_PLAYER_LIMIT - 1) * 32), hud_format_text("Archipelago"))
+        rom.write_bytes(0x195FFC + ((ROM_PLAYER_LIMIT - 1) * 32), hud_format_text("Archipelago"))
 
         # Change settings which don't affect logic, like quickswapping
         self.apply_player_settings(rom)
