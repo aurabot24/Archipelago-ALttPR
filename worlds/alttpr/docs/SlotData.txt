@@ -131,8 +131,15 @@ This is the current slot data for the APWorld. Several fields use different name
             'boss_shuffle': 'none',
 
             /*
+             * Crystal Book
+             * Values: 0 for vanilla, 1 for flipping crystal blocks with the Book
+             */
+            'crystal_book': 0,
+
+            /*
              * Free Lamp Cone
              * Values: 0 for vanilla, 1 to always see in the dark
+             */
             'free_lamp_cone': 0,
 
             /*
