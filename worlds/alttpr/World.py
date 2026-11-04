@@ -119,6 +119,7 @@ class ALttPRWorld(World):
                       "Compass (Misery Mire)",
                       "Compass (Turtle Rock)",
                       "Compass (Ganons Tower)"},
+        "Crystals": {"Crystal 1", "Crystal 2", "Crystal 3", "Crystal 4", "Crystal 5", "Crystal 6", "Crystal 7"},
         "Flute": {"Ocarina", "Ocarina (Activated)"},
         "Magic Cape": {"Cape"},
         "Maps": {"Map (Escape)",
@@ -134,7 +135,8 @@ class ALttPRWorld(World):
                  "Map (Misery Mire)",
                  "Map (Turtle Rock)",
                  "Map (Ganons Tower)"},
-        "Progressive Mail": {"Progressive Armor"}
+        "Pendants": {"Blue Pendant", "Green Pendant", "Red Pendant"},
+        "Progressive Mail": {"Progressive Armor"},
     }
 
     # There is always one region that the generator starts from & assumes you can always go back to.
