@@ -477,6 +477,12 @@ class CollectionRate(Toggle):
     default = False
 
 
+class Scams(Toggle):
+    """If on, the Bottle Merchant and King Zora will no longer tell you what they are selling."""
+    display_name = "Scams"
+    default = False
+
+
 class JunkItemFrames(NamedRange):
     """Reduces the number of frames Link holds unimportant items above his head."""
     display_name = "Junk Item Frames"
@@ -701,6 +707,7 @@ class ALttPROptions(PerGameCommonOptions):
     crystal_book: CrystalBook
     dungeon_counters: DungeonCounters
     collection_rate: CollectionRate
+    scams: Scams
     junk_item_frames: JunkItemFrames
     show_checks_on_map: ShowChecksOnMap
     show_checks_on_hud: ShowChecksOnHud
@@ -794,6 +801,7 @@ alttpr_option_groups: list[OptionGroup] = [
             MirrorScroll,
             PreActivatedFlute,
             Pseudoflute,
+            Scams,
             ShowChecksOnMap,
             ShowChecksOnHud,
             ShowDungeonMaps,

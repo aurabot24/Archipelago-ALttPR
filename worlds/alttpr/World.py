@@ -516,6 +516,7 @@ class ALttPRWorld(World):
         self.door_rando_world.pseudoboots = {1: self.options.pseudoboots.value}
         self.door_rando_world.require_ganon_item = {1: self.options.require_ganon_item.value}
         self.door_rando_world.rom_seeds = {1: self.random.randint(0, 999999999)}
+        self.door_rando_world.scams = {1: self.options.scams.value}
         self.door_rando_world.settings = CustomSettings()
         self.door_rando_world.shopsanity = {1: self.options.shopsanity.value}
         self.door_rando_world.showloot = {1: self.options.show_checks_on_map.current_key}
@@ -725,6 +726,9 @@ class ALttPRWorld(World):
         if "Ocarina" in start_inventory and (self.options.pre_activated_flute or self.options.world_mode == "inverted"):
             self.options.start_inventory.value["Ocarina (Activated)"] = 1
             del self.options.start_inventory.value["Ocarina"]
+
+        if self.options.pseudoflute and ("Ocarina" in start_inventory or "Ocarina (Activated)" in start_inventory):
+            errors.append("Pseudoflute is not allowed with Ocarina in the start inventory.")
 
         invalid_items = []
         for item in start_inventory:
