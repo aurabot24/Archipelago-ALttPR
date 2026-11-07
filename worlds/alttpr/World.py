@@ -458,6 +458,8 @@ class ALttPRWorld(World):
             pottery = self.options.potsanity.current_key
 
         enable_dungeon_counter = shuffled_doors or dropshuffle == "underworld" or pottery in ["dungeon", "lottery"]
+        # Pseudoflute overwrites the real Flute if it's in the start inventory
+        pseudoflute = self.options.pseudoflute.value and "Ocarina" not in self.options.start_inventory and "Ocarina (Activated)" not in self.options.start_inventory
 
         self.door_rando_world = DoorRandoWorld(
             1, {1: "vanilla"}, {1: False}, {1: "none"}, {1: False}, {1: self.options.entrance_shuffle.current_key},
@@ -493,7 +495,7 @@ class ALttPRWorld(World):
         self.door_rando_world.experimental = {
             1: False}  # This makes you a bunny if your spawn point is in the dark world
         self.door_rando_world.extra_keys = {1: alttpr_options.extra_keys_from_option(self.options.extra_keys)}
-        self.door_rando_world.flute_mode = {1: "pseudo" if self.options.pseudoflute.value else "active" if self.options.pre_activated_flute.value else "normal"}
+        self.door_rando_world.flute_mode = {1: "pseudo" if pseudoflute else "active" if self.options.pre_activated_flute.value else "normal"}
         self.door_rando_world.free_lamp_cone = {1: self.options.pseudolamp.value}
         self.door_rando_world.ganon_item = {1: self.options.ganon_vulnerability_item.current_key}
         self.door_rando_world.intensity = {1: 2 if not self.options.lobby_shuffle.value else 3}  # No door shuffle
@@ -726,9 +728,6 @@ class ALttPRWorld(World):
         if "Ocarina" in start_inventory and (self.options.pre_activated_flute or self.options.world_mode == "inverted"):
             self.options.start_inventory.value["Ocarina (Activated)"] = 1
             del self.options.start_inventory.value["Ocarina"]
-
-        if self.options.pseudoflute and ("Ocarina" in start_inventory or "Ocarina (Activated)" in start_inventory):
-            errors.append("Pseudoflute is not allowed with Ocarina in the start inventory.")
 
         invalid_items = []
         for item in start_inventory:
