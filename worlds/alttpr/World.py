@@ -722,7 +722,7 @@ class ALttPRWorld(World):
             errors.append(f"{self.options.sprite.value} is not a valid sprite.")
 
         if self.options.swordless.value and self.options.ganon_vulnerability_item in ["bombos", "ether", "quake"]:
-            errors.append(f"Swordless mode cannot require {self.optinos.ganon_vulnerability_item.value} to defeat Ganon.")
+            errors.append(f"Swordless mode cannot require {self.options.ganon_vulnerability_item.value} to defeat Ganon.")
 
         start_inventory = self.options.start_inventory.value.keys()
         if "Ocarina" in start_inventory and (self.options.pre_activated_flute or self.options.world_mode == "inverted"):
