@@ -286,12 +286,14 @@ class ALttPRWorld(World):
                     else:
                         trap_classification = self.random.choice([ItemClassification.progression, ItemClassification.useful, ItemClassification.filler])
 
+                # Using a player ID on a boss prize softlocks the game without sending the check
+                player_id = location.item.player if "Prize" not in location.name else 0
                 if location.item.classification & ItemClassification.progression or trap_classification == ItemClassification.progression:
-                    dr_item = ItemFactory("Progression AP Item", 1, location.item.player)
+                    dr_item = ItemFactory("Progression AP Item", 1, player_id)
                 elif location.item.classification & ItemClassification.useful or trap_classification == ItemClassification.useful:
-                    dr_item = ItemFactory("Useful AP Item", 1, location.item.player)
+                    dr_item = ItemFactory("Useful AP Item", 1, player_id)
                 else:
-                    dr_item = ItemFactory("Filler AP Item", 1, location.item.player)
+                    dr_item = ItemFactory("Filler AP Item", 1, player_id)
 
                 self.set_hint_and_credits_text(dr_item, location.item)
 
