@@ -502,8 +502,8 @@ def init_lookups(enemy_map=None):
                 # Stupid slot data turning all the numbers into strings
                 if str(super_tile) in enemy_map and str(index) in enemy_map[str(super_tile)]:
                     new_sprite = enemy_map[str(super_tile)][str(index)]
-                    if sprite.kind != new_sprite:
-                        # 0x09 is the ID for Moldorm, but enemy_shuffle will create Wallmasters with ID 0x09.
+                    if sprite.kind != new_sprite and new_sprite in EnemyList.sprite_translation:
+                        # An enemy has been shuffled. 0x09 is the ID for Moldorm, but enemy_shuffle will create Wallmasters with ID 0x09.
                         # If I change it to 0x90, the correct ID, the ROM crashes when entering a room with a Wallmaster.
                         # Absolutely no idea what's going on.
                         if new_sprite == EnemyList.EnemySprite.Wallmaster or new_sprite == 0x09:
