@@ -5,7 +5,7 @@ This is the current slot data for the APWorld. Several fields use different name
         1: {
             /*
              * Goal
-             * Values: 'crystals', 'ganon', 'dungeons', 'pedestal', 'triforcehunt', 'ganonhunt', 'trinity', 'completionist'
+             * Values: 'crystals', 'ganon', 'dungeons', 'pedestal', 'triforcehunt', 'ganonhunt', 'trinity', 'completionist', 'bosshunt'
              */
             'goal': 'crystals',
 
@@ -17,15 +17,15 @@ This is the current slot data for the APWorld. Several fields use different name
 
             /*
              * Crystals for Ganons Tower
-             * Values: {}, always? TODO that's not good.
+             * Values: 0-7
              */
-            'crystals_gt': {},
+            'crystals_gt': 7,
 
             /*
              * Crystals for killing Ganon
-             * Values: {}, always? TODO that's not good.
+             * Values: 0-7
              */
-            'crystals_ganon': {},
+            'crystals_ganon': 7,
 
             /*
              * Triforce Goal
@@ -39,6 +39,33 @@ This is the current slot data for the APWorld. Several fields use different name
              * Values: An integer
              */
             'triforce_goal': 30,
+
+            /*
+             * Bosses Needed for Ganon
+             * The number of bosses who must be defeated before killing Ganon in bosshunt mode
+             * Values: An integer from 0-12
+             */
+            'bosses_ganon': 8,
+
+            /*
+             * Bosshunt Include Agas
+             * Whether the two Agahnim fights are counted for bosshunt
+             * Values: true/false
+             */
+            'bosshunt_include_agas': false,
+
+            /*
+             * Ganon Item
+             * What item Ganon is vulnerable to
+             * Values: silver, boomerang, hookshot, powder, fire rod, ice rod, bombos, ether, quake, hammer, bee, somaria, byrna
+             */
+            'ganon_item': 'silver',
+
+            /*
+             * Require Ganon Item
+             * Whether to patch out silverless
+             */
+            'require_ganon_item': false,
 
             /*
              * Big Key Shuffle
@@ -78,9 +105,9 @@ This is the current slot data for the APWorld. Several fields use different name
 
             /*
              * Shopsanity
-             * Values: 1 for shopsanity, 0 for no shopsanity. Not sure why it isn't True/False, I guess AP stores bools as 1 or 0 internally? Maybe?
+             * Values: true/false
              */
-            'shopsanity': 0,
+            'shopsanity': false,
 
             /*
              * Prizesanity
@@ -90,9 +117,9 @@ This is the current slot data for the APWorld. Several fields use different name
 
             /*
              * Bombless Start
-             * Values: 1 for no bombs at start, 0 for vanilla
+             * Values: true for no bombs at start, false for vanilla
              */
-             'bombbag': 0
+             'bombbag': false
 
             /*
              * World Mode
@@ -132,15 +159,15 @@ This is the current slot data for the APWorld. Several fields use different name
 
             /*
              * Crystal Book
-             * Values: 0 for vanilla, 1 for flipping crystal blocks with the Book
+             * Values: false for vanilla, true for flipping crystal blocks with the Book
              */
-            'crystal_book': 0,
+            'crystal_book': false,
 
             /*
              * Free Lamp Cone
-             * Values: 0 for vanilla, 1 to always see in the dark
+             * Values: false for vanilla, true to always see in the dark
              */
-            'free_lamp_cone': 0,
+            'free_lamp_cone': false,
 
             /*
              * Entrance Shuffle
@@ -150,15 +177,15 @@ This is the current slot data for the APWorld. Several fields use different name
 
             /*
              * Shuffle Link's House
-             * Values: 1 to shuffle with crossed entrance shuffle, 0 to not shuffle
+             * Values: true to shuffle with crossed entrance shuffle, false to not shuffle
              */
-            'shufflelinks': 0,
+            'shufflelinks': false,
 
             /*
              * Shuffle back of Tavern
-             * Values: 1 to shuffle with crossed entrance shuffle, 0 to not shuffle
+             * Values: true to shuffle with crossed entrance shuffle, false to not shuffle
              */
-            'shufflelinks': 0,
+            'shufflelinks': false,
 
             /*
              * Shuffle Skull Woods
@@ -190,17 +217,24 @@ This is the current slot data for the APWorld. Several fields use different name
             'door_type_mode': 'original',
 
             /*
-             * Pseudoboots
-             * Values: 1 for enabled, 0 for disabled
+             * Extra Keys
+             * How many percentage of extra keys (without extra locked doors) are added to dungeons in doors. The keys are rounded up,
+             * so a value of 1 will always add 1 extra key. 10 would add 10% more keys rounded up, and so on.
+             * Values: An integer from 0 to 40.
              */
-            'pseudoboots': 0,
+            'extra_keys': 0,
+
+            /*
+             * Pseudoboots
+             * Values: true for enabled, false for disabled
+             */
+            'pseudoboots': false,
 
             /*
              * Mirror Scroll
-             * Values: True for enabled, False for disabled. Always enabled with door shuffle regardless of this setting.
-             * No idea why it's True/False when Pseudoboots are 1/0 ¯\_(ツ)_/¯
+             * Values: true for enabled, false for disabled. Always enabled with door shuffle regardless of this setting.
              */
-            'mirrorscroll': False,
+            'mirrorscroll': false,
 
             /*
              * Pre-activated Flute
@@ -251,6 +285,18 @@ This is the current slot data for the APWorld. Several fields use different name
             'Turtle Rock': 'Quake',
         },
     },
+    'prizes': {
+        'Eastern Palace': 'Green Pendant',
+        'Desert Palace': 'Blue Pendant',
+        'Tower of Hera': 'Red Pendant',
+        'Palace of Darkness': 'Crystal 1',
+        'Swamp Palace': 'Crystal 2',
+        'Skull Woods': 'Crystal 3',
+        'Thieves Town': 'Crystal 4',
+        'Ice Palace': 'Crystal 5',
+        'Misery Mire': 'Crystal 6',
+        'Turtle Rock': 'Crystal 7',
+    }
     'ow-flutespots': {
         1: {
             /*
